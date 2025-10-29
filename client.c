@@ -10,22 +10,23 @@
 int client_socket;
 int connection;
 
+//creating a new request function
 void request(){
-    struct sockaddr_in client_address;  
+    struct sockaddr_in client_address;  //calling the sockaddr_in struct so i could store client-ip addresses into the the sockaddr_in
 
-    memset(&client_address,0,sizeof(client_address)); 
+    memset(&client_address,0,sizeof(client_address)); //clearing the addresses before setting new values
 
     client_address.sin_family = AF_INET;  
     client_address.sin_port = htons(8080); 
-    client_address.sin_addr.s_addr =htonl(INADDR_ANY); 
+    client_address.sin_addr.s_addr =htonl(INADDR_ANY); //this can be changed into the server ip address
 
-    connection = connect(client_socket,(const struct sockaddr *) &client_address,sizeof(client_address));
+    connection = connect(client_socket,(const struct sockaddr *) &client_address,sizeof(client_address)); //using the connect fuction so to connect into the server
     
 }
 
 
 
-
+//creating chat function
 void chat(){
     char message[1024];
     char reply[1024];

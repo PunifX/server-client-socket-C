@@ -5,20 +5,31 @@
 #include <netinet/in.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <errno.h>
+
+
 int connection;
 int server_socket;
+const char *host_ip;
+const char *host_port;
 
+//creating a void function for accepting socket request from clients
 
 void Accept() {
         
     listen(server_socket,5);
     printf("listening...\n");
     struct sockaddr_in client_address;
-    socklen_t len = sizeof(client_address); //
-    connection = accept(server_socket, (struct sockaddr *)&client_address,&len); //
+    socklen_t len = sizeof(client_address); 
+
+
+    connection = accept(server_socket, (struct sockaddr *)&client_address,&len); 
         
     if (connection <=0){
-        printf("connection failed\n");
+
+        //creating an error message for the socket creation 
+
+        perror("connection failed\n");
         return ;
     }
         
@@ -46,15 +57,32 @@ void chat(){
     fgets(reply,sizeof(reply),stdin);
     send(connection,reply,strlen(reply),0);
 }
+//fucntion for asking the argumants with at least of 3 counters ./server <Ip> <port>
+void arg(int argc,const char *argv[]){
+    if (argc<3){
+        printf("please provide two arguemnts\n./server <ip> <port>\n");
+        exit(1) ;
+    }else{
+
+       host_ip = argv[1];
+       host_port = argv[2]; 
+
+    }
 
 
+}
 int main(int argc,const char *argv[]){
+    arg(argc,argv);
+
+    
+    //printf("%s:%s",host_ip,host_port); just to verify if the arguments are working
+
 
     server_socket=socket(AF_INET,SOCK_STREAM,0); //creating a socket in ipv4 using tcp stream
 
     if(server_socket<0){
 
-        printf("Failed to create socket\n");
+        perror("Failed to create socket\n");
         return 1;
     }
 
@@ -73,10 +101,10 @@ int main(int argc,const char *argv[]){
     int status = bind(server_socket,(struct sockaddr *) &server_address ,sizeof(server_address));// here comes the binding,we bind the socket,
 
     if (status<0){
-        printf("the bind didnt work\n");
+        perror("the bind didnt work\n");
         return 1;
     }
-    printf("bind is succefully working\n");
+    printf("bind is succefully created \n");
     while(1){
         Accept();
         while(1){
