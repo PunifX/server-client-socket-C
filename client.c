@@ -44,15 +44,12 @@ void chat(){
     char message[1024];
     char reply[1024];
 
-
-    
-
-
     memset(&message,0,sizeof(message));
     
+         
+    printf("%s: ",name);
+    fgets(message, sizeof(message), stdin);
     
-    fgets(message, sizeof(message), stdin);     
-    printf("%s:%s",name,message);
     send(client_socket,message,strlen(message),0);
     
     memset(&reply,0,sizeof(reply));
@@ -80,6 +77,7 @@ int main(int argc,const char *argv[]) {
     printf("connected!\n");
     printf("Enter your name : ");
     fgets(name, sizeof(name), stdin);
+    name[strcspn(name,"\n")] ='\0';
     send(client_socket,name,strlen(name),0);
     while(1){
         chat();
