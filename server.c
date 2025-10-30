@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <errno.h>
-
+#include <pthread.h>
 
 int connection;
 int server_socket;
@@ -116,6 +116,6 @@ int main(int argc,const char *argv[]){
             chat();
             }
         }
-
+        
         close(server_socket);
     }

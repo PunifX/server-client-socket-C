@@ -20,11 +20,16 @@ void request(){
     memset(&client_address,0,sizeof(client_address)); //clearing the addresses before setting new values
 
     client_address.sin_family = AF_INET;  
-    client_address.sin_port = htons(8080); 
-    client_address.sin_addr.s_addr =htonl(INADDR_ANY); //this can be changed into the server ip address
-
+    client_address.sin_port = htons(atoi(host_port)); 
+    if (inet_pton(AF_INET, host_ip, &client_address.sin_addr) <= 0) {
+        perror("Invalid IP address");
+    return;
+    }
     connection = connect(client_socket,(const struct sockaddr *) &client_address,sizeof(client_address)); //using the connect fuction so to connect into the server
-    
+    if (connection <0){
+        printf("invalid ip or port");
+        return;
+    }
 }
 
 void args(int argc,const char *argv[]){
@@ -71,7 +76,7 @@ int main(int argc,const char *argv[]) {
     }
     printf("client socket created successfully\n");
     printf("trying to connect...");
-    request();
+    request(argc,argv);
     
     
     printf("connected!\n");
