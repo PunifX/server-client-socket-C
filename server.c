@@ -12,7 +12,7 @@ int connection;
 int server_socket;
 // const char *host_ip;
 // const char *host_port;
-char name[50];
+char name[70];
 
 //creating a void function for accepting socket request from clients
 
@@ -102,7 +102,7 @@ int main(int argc,const char *argv[]){
     
 
     int status = bind(server_socket,(struct sockaddr *) &server_address ,sizeof(server_address));// here comes the binding,we bind the socket,
-
+ //the adress and the port together using bind function
     if (status<0){
         perror("the bind didnt work\n");
         return 1;

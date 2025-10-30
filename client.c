@@ -11,8 +11,8 @@ int client_socket;
 int connection;
 const char *host_ip;
 const char *host_port;
-char name[50];
-
+char name[70];
+//
 //creating a new request function
 void request(){
     struct sockaddr_in client_address;  //calling the sockaddr_in struct so i could store client-ip addresses into the the sockaddr_in
