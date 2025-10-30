@@ -10,14 +10,13 @@
 
 int connection;
 int server_socket;
-const char *host_ip;
-const char *host_port;
+// const char *host_ip;
+// const char *host_port;
+char name[50];
 
 //creating a void function for accepting socket request from clients
 
 void Accept() {
-        
-    listen(server_socket,5);
     printf("listening...\n");
     struct sockaddr_in client_address;
     socklen_t len = sizeof(client_address); 
@@ -35,7 +34,7 @@ void Accept() {
         
     printf("connected!\n");
     
-    
+    recv(connection,name,sizeof(name),0);
 }
 
 
@@ -49,30 +48,34 @@ void chat(){
     int bytes_Rec=recv(connection,message,sizeof(message),0);
     if(bytes_Rec <= 0) return;
 
-    printf("client : %s",message);
+    printf("%s : %s",name,message);
 
-    printf("type something : ");
+    printf("you : ");
     
     
     fgets(reply,sizeof(reply),stdin);
     send(connection,reply,strlen(reply),0);
 }
 //fucntion for asking the argumants with at least of 3 counters ./server <Ip> <port>
-void arg(int argc,const char *argv[]){
-    if (argc<3){
-        printf("please provide two arguemnts\n./server <ip> <port>\n");
-        exit(1) ;
-    }else{
+// void arg(int argc,const char *argv[]){
+//     if (argc<3){
+//         printf("please provide two arguemnts\n./server <ip> <port>\n");
+//         exit(1) ;
+//     }else{
 
-       host_ip = argv[1];
-       host_port = argv[2]; 
+//        host_ip = argv[1];
+//        host_port = argv[2]; 
 
-    }
+//     }
 
 
-}
+//fucntion for asking the argumants with at least of 3 counters ./server <Ip> <port>
+
+
+
+
 int main(int argc,const char *argv[]){
-    arg(argc,argv);
+    //arg(argc,argv);
 
     
     //printf("%s:%s",host_ip,host_port); just to verify if the arguments are working
@@ -105,8 +108,10 @@ int main(int argc,const char *argv[]){
         return 1;
     }
     printf("bind is succefully created \n");
+    listen(server_socket,5); //listening for clients with max 5 connections in the queue
     while(1){
         Accept();
+
         while(1){
             chat();
             }

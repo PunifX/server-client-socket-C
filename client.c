@@ -9,6 +9,9 @@
 #include <arpa/inet.h>
 int client_socket;
 int connection;
+const char *host_ip;
+const char *host_port;
+char name[50];
 
 //creating a new request function
 void request(){
@@ -24,16 +27,32 @@ void request(){
     
 }
 
+void args(int argc,const char *argv[]){
+    if (argc<3){
+        printf("please provide two arguemnts\n./client <ip> <port>\n");
+        exit(1) ;
+    }else{
 
+       host_ip = argv[1];
+       host_port = argv[2]; 
+
+    }
+}
 
 //creating chat function
 void chat(){
     char message[1024];
     char reply[1024];
+
+
+    
+
+
     memset(&message,0,sizeof(message));
     
-    printf("Enter your message : ");
+    
     fgets(message, sizeof(message), stdin);     
+    printf("%s:%s",name,message);
     send(client_socket,message,strlen(message),0);
     
     memset(&reply,0,sizeof(reply));
@@ -46,6 +65,8 @@ void chat(){
 
 
 int main(int argc,const char *argv[]) {
+    args(argc,argv);
+
     client_socket=socket(AF_INET,SOCK_STREAM,0); 
     if(client_socket<=0){
         printf("Failed to create socket\n");
@@ -57,7 +78,9 @@ int main(int argc,const char *argv[]) {
     
     
     printf("connected!\n");
-    
+    printf("Enter your name : ");
+    fgets(name, sizeof(name), stdin);
+    send(client_socket,name,strlen(name),0);
     while(1){
         chat();
     }
