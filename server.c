@@ -12,12 +12,20 @@ int connection;
 int server_socket;
 // const char *host_ip;
 // const char *host_port;
-char name[70];
+
+typedef struct {
+    int socket;
+    char name[70];
+    int id;
+} Client;
+
+Client *clients[10];
+int client_count=0;
 
 //creating a void function for accepting socket request from clients
 
 void Accept() {
-    printf("listening...\n");
+
     struct sockaddr_in client_address;
     socklen_t len = sizeof(client_address); 
 
@@ -32,9 +40,12 @@ void Accept() {
         return ;
     }
         
-    printf("connected!\n");
+    
     
     recv(connection,name,sizeof(name),0);
+    printf("%s has connected!\n",name);
+
+    ->
 }
 
 
@@ -99,7 +110,10 @@ int main(int argc,const char *argv[]){
     server_address.sin_family = AF_INET;  //specifying that it is ipv4
     server_address.sin_port = htons(8080);; // specifiying the port of 8080 using htons that conver unsigned short inter to bytes
     server_address.sin_addr.s_addr = htonl(INADDR_ANY); //specfying the adress ip
-    
+
+
+    char ip_str[INET_ADDRSTRLEN]; 
+    int port = ntohs(server_address.sin_port);
 
     int status = bind(server_socket,(struct sockaddr *) &server_address ,sizeof(server_address));// here comes the binding,we bind the socket,
  //the adress and the port together using bind function
@@ -109,13 +123,13 @@ int main(int argc,const char *argv[]){
     }
     printf("bind is succefully created \n");
     listen(server_socket,5); //listening for clients with max 5 connections in the queue
+    printf("listening at 0.0.0.0:%d \n",port);
     while(1){
-        Accept();
 
-        while(1){
-            chat();
-            }
+        Accept();
+        chat();
+
         }
-        
+        close(connection);
         close(server_socket);
     }

@@ -26,10 +26,8 @@ void request(){
     return;
     }
     connection = connect(client_socket,(const struct sockaddr *) &client_address,sizeof(client_address)); //using the connect fuction so to connect into the server
-    if (connection <0){
-        printf("invalid ip or port");
-        return;
-    }
+   
+    
 }
 
 void args(int argc,const char *argv[]){
@@ -75,9 +73,14 @@ int main(int argc,const char *argv[]) {
         return 1;
     }
     printf("client socket created successfully\n");
-    printf("trying to connect...");
+    printf("trying to connect...\n");
     request(argc,argv);
-    
+
+
+    if (connection <0){
+        printf("invalid ip or port\n");
+        return 1;
+    }
     
     printf("connected!\n");
     printf("Enter your name : ");
