@@ -7,6 +7,10 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+
+
+
+
 int client_socket;
 int connection;
 const char *host_ip;

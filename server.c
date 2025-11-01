@@ -8,21 +8,38 @@
 #include <errno.h>
 #include <pthread.h>
 
+
+
 int connection;
 int server_socket;
 // const char *host_ip;
 // const char *host_port;
+char name[70];
 
-typedef struct {
-    int socket;
-    char name[70];
-    int id;
-} Client;
 
-Client *clients[10];
-int client_count=0;
+// typedef struct {
+    //     int socket;
+    
+    //     int id;
+    // } Client;
+    
+    // Client *clients[10];
+    // int client_count=0;
+    
+    //creating a void function for accepting socket request from clients
+    
+void *handle_client(void *arg){
+    accept();
 
-//creating a void function for accepting socket request from clients
+    int *client_1=malloc(size(10));
+    int *client_2=malloc(size(10));
+    
+    *client_1 = connection;
+    int pthread_create(connection,);
+
+
+}
+
 
 void Accept() {
 
@@ -45,7 +62,6 @@ void Accept() {
     recv(connection,name,sizeof(name),0);
     printf("%s has connected!\n",name);
 
-    ->
 }
 
 
