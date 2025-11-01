@@ -73,35 +73,35 @@ void Accept() {
 }
 
 
-void chat(){
+// void chat(){
 
-    char message[1024];
-    char reply[1024];
+//     char message[1024];
+//     char reply[1024];
 
-    memset(&message,0,sizeof(message));
+//     memset(&message,0,sizeof(message));
 
-    int bytes_Rec=recv(connection,message,sizeof(message),0);
-    if(bytes_Rec <= 0) return;
+//     int bytes_Rec=recv(connection,message,sizeof(message),0);
+//     if(bytes_Rec <= 0) return;
 
-    printf("%s : %s",name,message);
+//     printf("%s : %s",name,message);
 
-    printf("you : ");
+//     printf("you : ");
     
     
-    fgets(reply,sizeof(reply),stdin);
-    send(connection,reply,strlen(reply),0);
-}
-fucntion for asking the argumants with at least of 3 counters ./server <Ip> <port>
-void arg(int argc,const char *argv[]){
-    if (argc<3){
-        printf("please provide two arguemnts\n./server <ip> <port>\n");
-        exit(1) ;
-    }else{
+//     fgets(reply,sizeof(reply),stdin);
+//     send(connection,reply,strlen(reply),0);
+// }
+// fucntion for asking the argumants with at least of 3 counters ./server <Ip> <port>
+// void arg(int argc,const char *argv[]){
+//     if (argc<3){
+//         printf("please provide two arguemnts\n./server <ip> <port>\n");
+//         exit(1) ;
+//     }else{
 
-       host_ip = argv[1];
-       host_port = argv[2]; 
+//        host_ip = argv[1];
+//        host_port = argv[2]; 
 
-    }
+//     }
 
 
 fucntion for asking the argumants with at least of 3 counters ./server <Ip> <port>
@@ -160,6 +160,6 @@ int main(int argc,const char *argv[]){
     }
     close(server_socket);
     memset(&status,0,sizeof(status));
-
+    
 }
 

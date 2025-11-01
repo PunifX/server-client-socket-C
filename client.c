@@ -67,6 +67,8 @@ void chat(){
     printf("server: %s",name,reply);
 }
 
+//need to fix client's side of chat to recive first name and send their name 
+
 
 int main(int argc,const char *argv[]) {
     args(argc,argv);
