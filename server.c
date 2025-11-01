@@ -14,7 +14,7 @@ int connection;
 int server_socket;
 // const char *host_ip;
 // const char *host_port;
-char name[70];
+
 
 
 // typedef struct {
@@ -29,15 +29,27 @@ char name[70];
     //creating a void function for accepting socket request from clients
     
 void *handle_client(void *arg){
-    accept();
+        int client_socket = *(int*)arg;
+        free(arg);
 
-    int *client_1=malloc(size(10));
-    int *client_2=malloc(size(10));
+        char name [70];
+
+        recv(client_socket,name,sizeof(name),0);
+        printf("%s has connected succefuly!\n",name);
+        while(1){
+            char message[1024];
+            memset(message,0,sizeof(message));
+
+            int byte =recv(client_socket,message,sizeof(message),0);
+            if (byte <= 0) break;
+            printf("%s:%s",name,message);
+            send(client_socket,message,sizeof(message),0);
     
-    *client_1 = connection;
-    int pthread_create(connection,);
-
-
+            
+        }
+        printf("%s has disconnected!\n",name);
+        close(client_socket);
+        return NULL;
 }
 
 
@@ -58,31 +70,27 @@ void Accept() {
     }
         
     
-    
-    recv(connection,name,sizeof(name),0);
-    printf("%s has connected!\n",name);
-
 }
 
 
-void chat(){
+// void chat(){
 
-    char message[1024];
-    char reply[1024];
+//     char message[1024];
+//     char reply[1024];
 
-    memset(&message,0,sizeof(message));
+//     memset(&message,0,sizeof(message));
 
-    int bytes_Rec=recv(connection,message,sizeof(message),0);
-    if(bytes_Rec <= 0) return;
+//     int bytes_Rec=recv(connection,message,sizeof(message),0);
+//     if(bytes_Rec <= 0) return;
 
-    printf("%s : %s",name,message);
+//     printf("%s : %s",name,message);
 
-    printf("you : ");
+//     printf("you : ");
     
     
-    fgets(reply,sizeof(reply),stdin);
-    send(connection,reply,strlen(reply),0);
-}
+//     fgets(reply,sizeof(reply),stdin);
+//     send(connection,reply,strlen(reply),0);
+// }
 //fucntion for asking the argumants with at least of 3 counters ./server <Ip> <port>
 // void arg(int argc,const char *argv[]){
 //     if (argc<3){
@@ -141,11 +149,17 @@ int main(int argc,const char *argv[]){
     listen(server_socket,5); //listening for clients with max 5 connections in the queue
     printf("listening at 0.0.0.0:%d \n",port);
     while(1){
-
         Accept();
-        chat();
 
-        }
-        close(connection);
-        close(server_socket);
+        int *socket_ptr = malloc(sizeof(int));
+        *socket_ptr=connection;
+
+        pthread_t thread_id;
+        pthread_create(&thread_id,NULL,handle_client,socket_ptr);
+        pthread_detach(thread_id);
     }
+    close(server_socket);
+    memset(&status,0,sizeof(status));
+
+}
+

@@ -64,7 +64,7 @@ void chat(){
     int recieve_byte=recv(client_socket,reply,sizeof(reply),0);
     if(recieve_byte <= 0)return;
 
-    printf("server: %s",reply);
+    printf("server: %s",name,reply);
 }
 
 
