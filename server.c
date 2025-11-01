@@ -15,8 +15,6 @@ int server_socket;
 // const char *host_ip;
 // const char *host_port;
 
-
-
 // typedef struct {
     //     int socket;
     
@@ -74,17 +72,14 @@ void Accept() {
 
 
 // void chat(){
-
 //     char message[1024];
 //     char reply[1024];
-
 //     memset(&message,0,sizeof(message));
 
 //     int bytes_Rec=recv(connection,message,sizeof(message),0);
 //     if(bytes_Rec <= 0) return;
 
 //     printf("%s : %s",name,message);
-
 //     printf("you : ");
     
     
@@ -97,10 +92,8 @@ void Accept() {
 //         printf("please provide two arguemnts\n./server <ip> <port>\n");
 //         exit(1) ;
 //     }else{
-
 //        host_ip = argv[1];
 //        host_port = argv[2]; 
-
 //     }
 
 
@@ -110,9 +103,9 @@ fucntion for asking the argumants with at least of 3 counters ./server <Ip> <por
 
 
 int main(int argc,const char *argv[]){
-    //arg(argc,argv);
 
-    
+
+    //arg(argc,argv);
     //printf("%s:%s",host_ip,host_port); just to verify if the arguments are working
 
 
@@ -160,6 +153,6 @@ int main(int argc,const char *argv[]){
     }
     close(server_socket);
     memset(&status,0,sizeof(status));
-    
+
 }
 
