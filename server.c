@@ -134,7 +134,7 @@ int main(int argc,const char *argv[]){
     int port = ntohs(server_address.sin_port);
 
     int status = bind(server_socket,(struct sockaddr *) &server_address ,sizeof(server_address));// here comes the binding,we bind the socket,
- //the adress and the port together using bind function
+     //the adress and the port together using bind function
     if (status<0){
         perror("the bind didnt work\n");
         return 1;

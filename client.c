@@ -8,7 +8,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-
+//still need to add pthreading 
 
 
 int client_socket;
