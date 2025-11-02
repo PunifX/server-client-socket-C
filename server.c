@@ -40,8 +40,9 @@ void *handle_client(void *arg){
 
             int byte =recv(client_socket,message,sizeof(message),0);
             if (byte <= 0) break;
-            printf("%s:%s",name,message);
             send(client_socket,message,sizeof(message),0);
+            printf("%s:%s",name,message);
+            
     
             
         }
@@ -97,7 +98,7 @@ void Accept() {
 //     }
 
 
-fucntion for asking the argumants with at least of 3 counters ./server <Ip> <port>
+//fucntion for asking the argumants with at least of 3 counters ./server <Ip> <port>
 
 
 

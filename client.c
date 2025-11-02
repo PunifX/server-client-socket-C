@@ -66,7 +66,7 @@ void chat(){
     int recieve_byte=recv(client_socket,reply,sizeof(reply),0);
     if(recieve_byte <= 0)return;
 
-    printf("server: %s",name,reply);
+    printf("server: %s",reply);
 }
 
 //need to fix client's side of chat to recive first name and send their name 
