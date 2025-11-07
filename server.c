@@ -71,6 +71,59 @@ void Accept() {
     
 }
 
+int main(int argc,const char *argv[]){
+    
+    
+    //arg(argc,argv);
+    //printf("%s:%s",host_ip,host_port); just to verify if the arguments are working
+
+
+    server_socket=socket(AF_INET,SOCK_STREAM,0); //creating a socket in ipv4 using tcp stream
+    
+    if(server_socket<0){
+        
+        perror("Failed to create socket\n");
+        return 1;
+    }
+    
+    
+    printf("Server socket created successfully\n");
+    
+    struct sockaddr_in server_address;  //creating a structure that stores server's ip adresses
+    
+    memset(&server_address,0,sizeof(server_address)); //clearing the memory of that structure 
+    
+    server_address.sin_family = AF_INET;  //specifying that it is ipv4
+    server_address.sin_port = htons(8080);; // specifiying the port of 8080 using htons that conver unsigned short inter to bytes
+    server_address.sin_addr.s_addr = htonl(INADDR_ANY); //specfying the adress ip
+    
+    
+    char ip_str[INET_ADDRSTRLEN]; 
+    int port = ntohs(server_address.sin_port);
+    
+    int status = bind(server_socket,(struct sockaddr *) &server_address ,sizeof(server_address));// here comes the binding,we bind the socket,
+    //the adress and the port together using bind function
+    if (status<0){
+        perror("the bind didnt work\n");
+        return 1;
+    }
+    printf("bind is succefully created \n");
+    listen(server_socket,5); //listening for clients with max 5 connections in the queue
+    printf("listening at 0.0.0.0:%d \n",port);
+    while(1){
+        Accept();
+        
+        int *socket_ptr = malloc(sizeof(int));
+        *socket_ptr=connection;
+        
+        pthread_t thread_id;
+        pthread_create(&thread_id,NULL,handle_client,socket_ptr);
+        pthread_detach(thread_id);
+    }
+    close(server_socket);
+    memset(&status,0,sizeof(status));
+    
+}
 
 // void chat(){
 //     char message[1024];
@@ -99,61 +152,3 @@ void Accept() {
 
 
 //fucntion for asking the argumants with at least of 3 counters ./server <Ip> <port>
-
-
-
-
-int main(int argc,const char *argv[]){
-
-
-    //arg(argc,argv);
-    //printf("%s:%s",host_ip,host_port); just to verify if the arguments are working
-
-
-    server_socket=socket(AF_INET,SOCK_STREAM,0); //creating a socket in ipv4 using tcp stream
-
-    if(server_socket<0){
-
-        perror("Failed to create socket\n");
-        return 1;
-    }
-
-
-    printf("Server socket created successfully\n");
-    
-    struct sockaddr_in server_address;  //creating a structure that stores server's ip adresses
-
-    memset(&server_address,0,sizeof(server_address)); //clearing the memory of that structure 
-
-    server_address.sin_family = AF_INET;  //specifying that it is ipv4
-    server_address.sin_port = htons(8080);; // specifiying the port of 8080 using htons that conver unsigned short inter to bytes
-    server_address.sin_addr.s_addr = htonl(INADDR_ANY); //specfying the adress ip
-
-
-    char ip_str[INET_ADDRSTRLEN]; 
-    int port = ntohs(server_address.sin_port);
-
-    int status = bind(server_socket,(struct sockaddr *) &server_address ,sizeof(server_address));// here comes the binding,we bind the socket,
-     //the adress and the port together using bind function
-    if (status<0){
-        perror("the bind didnt work\n");
-        return 1;
-    }
-    printf("bind is succefully created \n");
-    listen(server_socket,5); //listening for clients with max 5 connections in the queue
-    printf("listening at 0.0.0.0:%d \n",port);
-    while(1){
-        Accept();
-
-        int *socket_ptr = malloc(sizeof(int));
-        *socket_ptr=connection;
-
-        pthread_t thread_id;
-        pthread_create(&thread_id,NULL,handle_client,socket_ptr);
-        pthread_detach(thread_id);
-    }
-    close(server_socket);
-    memset(&status,0,sizeof(status));
-
-}
-
