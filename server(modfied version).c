@@ -7,8 +7,16 @@
 #include <unistd.h>       // close() for sockets, read(), write()
 #include <arpa/inet.h>    // inet_addr, htons, ntohs
 
-#
+#define MAX_CLIENTS 100
 
+typedef struct {
+    int socket;
+    char name[70];
+} Client;
+
+Client clients[MAX_CLIENTS];
+int client_count = 0;
+pthread_mutex_t clients_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 
 int socket_creating(){
@@ -72,7 +80,17 @@ void *handle_client_name_and_sending_messages(void *arg) {
     printf("%s has connected succefuly!\n",name);
     name[bytes] = '\0';
 
-
+    pthread_mutex_lock(&clients_mutex);
+    clients[client_count].socket = client_socket;
+    strcpy(clients[client_count].name, name);
+    client_count++;
+    int message_sent=recv(client_socket,name,sizeof(name),0);
+    if (message_sent<=0) {
+        close(client_socket);
+        return NULL;
+    }
+    printf("%s:%s\n",name,message_sent);
+    pthread_mutex_unlock(&clients_mutex);
 
 }
 
