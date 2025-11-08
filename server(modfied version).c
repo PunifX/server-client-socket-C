@@ -7,6 +7,10 @@
 #include <unistd.h>       // close() for sockets, read(), write()
 #include <arpa/inet.h>    // inet_addr, htons, ntohs
 
+#
+
+
+
 int socket_creating(){
     int server_socket=socket(AF_INET,SOCK_STREAM,0); // creating a socket
     printf("Socket created!\n");
@@ -54,17 +58,26 @@ int accepting(int server_socket){
     
 }
 
-int *handle_client_name(void *arg) {
+void *handle_client_name_and_sending_messages(void *arg) {
     int client_socket = *(int *)arg;
+
     free(arg);
+
     char name [70];
-    recv(client_socket,name,sizeof(name),0);
+    int bytes=recv(client_socket,name,sizeof(name),0);
+    if (bytes<=0) {
+        close(client_socket);
+        return NULL;
+    }
     printf("%s has connected succefuly!\n",name);
-    return name;
+    name[bytes] = '\0';
+
+
+
 }
 
 
-int handle_client_sending(void *arg) {
+int handle_broadcasting(void *arg) {
     int client_socket = *(int *)arg;
     free(arg);
 
@@ -87,28 +100,7 @@ int main(){
 
     
     while(1){
-       int connection =  accepting(server_socket);
-
-       int *socket_name = malloc(sizeof(int));
-       int *socket_recieve = malloc(sizeof(int));
-       int *socket_sending = malloc(sizeof(int));
-
-       *socket_name=*socket_sending=*socket_recieve=connection;
-
-       pthread_t thread_name;
-       pthread_t thread_recieve;
-       pthread_t thread_sending;
-
-       pthread_create(&thread_name,NULL,handle_client_name,socket_name);
-
-       pthread_create(&thread_recieve,NULL,handle_client_recieve,socket_sending);
-
-       pthread_create(&thread_name,NULL,handle_client_sending,socket_recieve);
-
-
-       pthread_detach(thread_name);
-       pthread_detach(thread_recieve);
-       pthread_detach(thread_sending);
+      
 
     }
     close(connection);
