@@ -84,14 +84,20 @@ void *handle_client_name_and_sending_messages(void *arg) {
     clients[client_count].socket = client_socket;
     strcpy(clients[client_count].name, name);
     client_count++;
+    pthread_mutex_unlock(&clients_mutex);
+    
+    char message_sent [1024]
+
+    while(1){
+
     int message_sent=recv(client_socket,name,sizeof(name),0);
     if (message_sent<=0) {
         close(client_socket);
         return NULL;
     }
     printf("%s:%s\n",name,message_sent);
-    pthread_mutex_unlock(&clients_mutex);
-
+    
+    }
 }
 
 
