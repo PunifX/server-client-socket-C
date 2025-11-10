@@ -88,6 +88,8 @@ void *handle_client_name_and_sending_messages(void *arg) {
     
     char message_sent [1024]
 
+    
+
     while(1){
 
     int message_sent=recv(client_socket,name,sizeof(name),0);
